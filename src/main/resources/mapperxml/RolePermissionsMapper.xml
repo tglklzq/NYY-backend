@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.lzq.nyy.mapper.RolePermissionsMapper">
+  <resultMap id="BaseResultMap" type="org.lzq.nyy.domain.RolePermissions">
+    <!--@mbg.generated-->
+    <!--@Table role_permissions-->
+    <id column="role_permission_id" jdbcType="INTEGER" property="rolePermissionId" />
+    <result column="role_name" jdbcType="VARCHAR" property="roleName" />
+    <result column="permission_name" jdbcType="VARCHAR" property="permissionName" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    role_permission_id, role_name, permission_name
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    <!--@mbg.generated-->
+    select 
+    <include refid="Base_Column_List" />
+    from role_permissions
+    where role_permission_id = #{rolePermissionId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    <!--@mbg.generated-->
+    delete from role_permissions
+    where role_permission_id = #{rolePermissionId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="role_permission_id" keyProperty="rolePermissionId" parameterType="org.lzq.nyy.domain.RolePermissions" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into role_permissions (role_name, permission_name)
+    values (#{roleName,jdbcType=VARCHAR}, #{permissionName,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" keyColumn="role_permission_id" keyProperty="rolePermissionId" parameterType="org.lzq.nyy.domain.RolePermissions" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into role_permissions
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="roleName != null">
+        role_name,
+      </if>
+      <if test="permissionName != null">
+        permission_name,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="roleName != null">
+        #{roleName,jdbcType=VARCHAR},
+      </if>
+      <if test="permissionName != null">
+        #{permissionName,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="org.lzq.nyy.domain.RolePermissions">
+    <!--@mbg.generated-->
+    update role_permissions
+    <set>
+      <if test="roleName != null">
+        role_name = #{roleName,jdbcType=VARCHAR},
+      </if>
+      <if test="permissionName != null">
+        permission_name = #{permissionName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where role_permission_id = #{rolePermissionId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="org.lzq.nyy.domain.RolePermissions">
+    <!--@mbg.generated-->
+    update role_permissions
+    set role_name = #{roleName,jdbcType=VARCHAR},
+      permission_name = #{permissionName,jdbcType=VARCHAR}
+    where role_permission_id = #{rolePermissionId,jdbcType=INTEGER}
+  </update>
+</mapper>

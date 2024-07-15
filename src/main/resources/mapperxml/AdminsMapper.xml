@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.lzq.nyy.mapper.AdminsMapper">
+  <resultMap id="BaseResultMap" type="org.lzq.nyy.domain.Admins">
+    <!--@mbg.generated-->
+    <!--@Table admins-->
+    <id column="admin_id" jdbcType="INTEGER" property="adminId"/>
+    <result column="username" jdbcType="VARCHAR" property="username"/>
+    <result column="password_hash" jdbcType="VARCHAR" property="passwordHash"/>
+    <result column="email" jdbcType="VARCHAR" property="email"/>
+    <result column="phone_number" jdbcType="VARCHAR" property="phoneNumber"/>
+    <result column="role_permission_id" jdbcType="INTEGER" property="rolePermissionId"/>
+    <result column="is_deleted" jdbcType="BOOLEAN" property="isDeleted"/>
+    <result column="deleted_at" jdbcType="TIMESTAMP" property="deletedAt"/>
+    <result column="created_at" jdbcType="TIMESTAMP" property="createdAt"/>
+    <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt"/>
+  </resultMap>
+
+  <resultMap id="BaseAdminsResult" type="org.lzq.nyy.dto.AdminsDTO">
+    <result column="admin_id" jdbcType="INTEGER" property="admin_id"/>
+    <result column="username" jdbcType="VARCHAR" property="username"/>
+    <result column="email" jdbcType="VARCHAR" property="email"/>
+    <result column="phone_number" jdbcType="VARCHAR" property="phone_number"/>
+    <result column="role_permission_id" jdbcType="INTEGER" property="role_permission_id"/>
+    <result column="password_hash" jdbcType="VARCHAR" property="password_hash"/>
+    <result property="role_name" column="role_name"/>
+    <result property="permission_name" column="permission_name"/>
+  </resultMap>
+
+
+
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    admin_id, username, password_hash, email, phone_number, role_permission_id, is_deleted,
+    deleted_at, created_at, updated_at
+  </sql>
+
+  <select id="selectByEmailandPasswordHash" resultMap="BaseResultMap">
+    select email, password_hash
+    from admins
+    where email = #{email}
+      and password_hash = #{passwordHash}
+  </select>
+
+  <select id="selectByEmail" resultMap="BaseResultMap">
+    select email, password_hash, role_permission_id
+    from admins
+    where email = #{email}
+  </select>
+
+  <select id="personalInformation" resultMap="BaseAdminsResult">
+    SELECT *
+    FROM admins a
+           JOIN role_permissions rp ON a.role_permission_id = rp.role_permission_id
+    where a.email = #{email}
+  </select>
+
+  <insert id="insertRegister">
+    insert into admins (username, password_hash, email, phone_number, role_permission_id, created_at)
+    values (#{username}, #{passwordHash}, #{email}, #{phoneNumber}, #{rolePermissionId}, #{createdAt})
+  </insert>
+
+  <update id="updateByPrimaryKey" parameterType="org.lzq.nyy.domain.Admins">
+    <!--@mbg.generated-->
+    update admins
+    set username = #{username,jdbcType=VARCHAR},
+    password_hash = #{passwordHash,jdbcType=VARCHAR},
+    email = #{email,jdbcType=VARCHAR},
+    phone_number = #{phoneNumber,jdbcType=VARCHAR},
+    role_permission_id = #{rolePermissionId,jdbcType=INTEGER},
+    is_deleted = #{isDeleted,jdbcType=BOOLEAN},
+    deleted_at = #{deletedAt,jdbcType=TIMESTAMP},
+    created_at = #{createdAt,jdbcType=TIMESTAMP},
+    updated_at = #{updatedAt,jdbcType=TIMESTAMP}
+    where admin_id = #{adminId,jdbcType=INTEGER}
+  </update>
+
+  <select id="showAlladmins" resultMap="BaseAdminsResult">
+    SELECT username, email, a.role_permission_id, phone_number, password_hash, rp.role_name
+    FROM admins a
+           JOIN role_permissions rp ON a.role_permission_id = rp.role_permission_id
+  </select>
+
+  <select id="selectAdminsDTO" resultMap="BaseAdminsResult">
+    select username, email, role_permission_id, phone_number, password_hash
+    from admins
+    where email = #{email};
+  </select>
+</mapper>

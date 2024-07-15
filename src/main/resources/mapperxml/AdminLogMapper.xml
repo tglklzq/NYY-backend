@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.lzq.nyy.mapper.AdminLogsMapper">
+    <insert id="insertAdminLog">
+        INSERT INTO admin_logs (admin_id, action, details)
+        VALUES (#{adminId}, #{action}, #{details})
+    </insert>
+
+    <select id="getAllAdminLogs" resultType="map">
+        SELECT a.username, l.action, l.details, l.action_time
+        FROM admin_logs l
+                 JOIN admins a ON l.admin_id = a.admin_id
+    </select>
+</mapper>
